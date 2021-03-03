@@ -104,7 +104,6 @@ public class BleEngineV3 {
                 device.setMajor(major);
                 device.setMinor(minor);
 
-
 //        System.out.println(ByteUtils.byteArrayToString(record));
 //        System.out.println("index : " + index);
 //
@@ -125,6 +124,9 @@ public class BleEngineV3 {
 //
 //        //电池电量
 //        System.out.println(ByteUtils.byteArrayToString(new byte[]{record[index + 12], record[index + 13]}));
+//
+//        //mac地址  [14,15,16,17,18,19]
+//        System.out.println(byteArrayToString(new byte[]{record[index + 14],record[index + 15],record[index + 16],record[index + 17],record[index + 18],record[index + 19]});
 
                 int broadCastInterval = record[index + 2] * 256 + (record[index + 3] & 0xFF);
 
@@ -132,6 +134,7 @@ public class BleEngineV3 {
                 int transPower = record[index + 5];
                 String bleName = new String(new byte[]{record[index + 6], record[index + 7], record[index + 8], record[index + 9], record[index + 10], record[index + 11]});
                 int battery = (record[index + 12] * 256 + (record[index + 13] & 0xFF)) - (record[index] * 256 + (record[index + 1] & 0xFF));
+                String mac = byteArrayToString(new byte[]{record[index + 14], record[index + 15], record[index + 16], record[index + 17], record[index + 18], record[index + 19]});
 
 //        System.out.println("beaconUuid : " + beaconUuid);
 //        System.out.println("major : " + major);
@@ -141,16 +144,36 @@ public class BleEngineV3 {
 //        System.out.println("transPower : " + transPower);
 //        System.out.println("bleName : " + bleName);
 //        System.out.println("battery : " + battery);
+//        System.out.println(mac);
 
                 device.setBroadCastInterval(broadCastInterval);
                 device.setTestPower(-Math.abs(testPower));
                 device.setTransPower(transPower);
                 device.setBleName(bleName);
                 device.setBattery(battery);
+                device.setAddress(mac);
 
                 return device;
             }
         }
         return null;
+    }
+
+
+    private static String byteArrayToString(byte[] buffer) {
+        if (buffer == null) {
+            return "";
+        }
+        final StringBuilder stringBuilder = new StringBuilder(buffer.length);
+        if (buffer.length > 0) {
+            for (int i = 0; i < buffer.length; i++) {
+                if (i == 0) {
+                    stringBuilder.append(String.format("%02X", buffer[i]));
+                } else {
+                    stringBuilder.append(String.format(":%02X", buffer[i]));
+                }
+            }
+        }
+        return stringBuilder.toString();
     }
 }
