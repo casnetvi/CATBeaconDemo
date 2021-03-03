@@ -94,7 +94,7 @@ public class BleEngineV3 {
                 }
             }
 
-            if (index > -1 && index + 14 < record.length) {
+            if (index > -1 && index + 19 < record.length) {
                 BDevice device = new BDevice(name, address, rssi, record);
                 iBeaconData iBeacon = iBeaconData.generateiBeacon(record);
                 String beaconUuid = iBeacon.beaconUuid.replace("-", "");
