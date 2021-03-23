@@ -80,7 +80,7 @@ public class BleEngineV3 {
 //                && record[2] == 0x06
                 && record[3] == 0x1A
                 && record[4] == (byte) 0xFF
-                && record[5] == 0x59
+//                && record[5] == 0x59
                 && record[6] == 0x00
                 && record[7] == 0x02
                 && record[8] == 0x15
